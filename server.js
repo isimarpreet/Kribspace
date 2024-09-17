@@ -91,7 +91,6 @@ function categorizeTokens(tokens) {
     budget: null,
     sizeSqft: null,
     yearBuilt: null,
-    propertyCondition: [],
     amenities: []
   };
 
@@ -119,7 +118,6 @@ function mapTokensToColumns(tokens) {
     budget: '',
     year_built: '',
     property_type: '',
-    property_condition: '',
     amenities: '',
   };
 
@@ -130,7 +128,7 @@ function mapTokensToColumns(tokens) {
     // Handle Budget (using regex to detect $ and numeric values)
     if (lemma.match(/\$\d+/)) {
       columns.budget = lemma.replace(/\$/, '');  // Remove $ a  nd assign the number as budget
-      columns.budget = parseInt(budgetValue, 10);  // Ensure budget is stored as a number
+      columns.budget = parseInt(columns.budget, 10);  // Ensure budget is stored as a number
     }
 
     // Handle Numbers (assuming numbers without $ represent year or size)
@@ -147,10 +145,7 @@ function mapTokensToColumns(tokens) {
       columns.property_type = token.text.content;  // Assign property type
     }
 
-    // Property condition detection (e.g., "Good", "Fair", etc.)
-    else if (['good', 'new', 'fair', 'excellent', 'poor','condition'].includes(lemma)) {
-      columns.property_condition = token.text.content;  // Assign property condition
-    }
+    
 
     // Amenities detection (e.g., "Gym", "Pool", etc.)
     else if (['garden', 'gym', 'pool', 'garage'].includes(lemma)) {
